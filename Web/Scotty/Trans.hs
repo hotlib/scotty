@@ -17,7 +17,7 @@ module Web.Scotty.Trans
       -- | 'Middleware' and routes are run in the order in which they
       -- are defined. All middleware is run first, followed by the first
       -- route that matches. If no route matches, a 404 response is given.
-    , middleware, get, post, put, delete, patch, options, addroute, matchAny, notFound
+    , middleware, get, post, put, delete, patch, options, addroute, matchAny, notFound, routeOptions
       -- ** Route Patterns
     , capture, regex, function, literal
       -- ** Accessing the Request, Captures, and Query Parameters
@@ -127,3 +127,8 @@ defaultHandler f = ScottyT $ modify $ addHandler $ Just (\e -> status status500 
 -- on the response). Every middleware is run on each request.
 middleware :: Middleware -> ScottyT e m ()
 middleware = ScottyT . modify . addMiddleware
+
+-- | Add route options. These options are available during request processing and could store 
+-- miscellaneous options for requests e.g. size, rate etc.
+routeOptions :: RouteOptions -> ScottyT e m ()
+routeOptions = ScottyT . modify . addRouteOptions
